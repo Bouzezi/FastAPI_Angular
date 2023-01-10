@@ -39,6 +39,10 @@ def voiture(num_imma:int,response:Response,session: Session = Depends(get_sessio
         return "voiture non trouvée"
     return voiture 
 
+@router.get("/marque/{brand}",response_model=List[Voiture])
+def getCarByBrand(brand:str,session: Session = Depends(get_session)):
+    return cv.getCarByBrand(brand,session)
+
 @router.post("/",response_model=Voiture,status_code=201)
 def ajout_voiture(voiture:Voiture,session: Session = Depends(get_session)):
     return cv.create_car(voiture,session)

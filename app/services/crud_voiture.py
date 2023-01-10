@@ -16,6 +16,10 @@ def all_cars_not_rented(session: Session):
 def getCarByNum(num_imma:int,session: Session):
     return session.get(Voiture,num_imma)
 
+def getCarByBrand(brand:str,session: Session):
+    stmt= select(Voiture).where(Voiture.marque.like('%'+ brand + '%'))
+    return session.exec(stmt).all()
+
 def total_number_cars(session: Session):
     stmt=select([func.count(Voiture.num_imma)])
     return session.exec(stmt).first()
