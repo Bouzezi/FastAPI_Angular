@@ -1,4 +1,4 @@
-from fastapi import Depends,Response,APIRouter
+from fastapi import Depends, HTTPException,Response,APIRouter
 from sqlmodel import Session
 import services.crud_voiture as cv
 from database import Voiture,engine
@@ -14,14 +14,19 @@ router = APIRouter(
 def get_session():
     with Session(engine) as session:
         yield session
+        
 
 @router.get("/",response_model=List[Voiture])
 def voitures(session: Session = Depends(get_session)):
     return cv.all_cars(session)
 
-@router.get("/disponibles",response_model=List[Voiture])
+@router.get("/disponible",response_model=List[Voiture])
 def voituresDisponible(session: Session = Depends(get_session)):
     return cv.all_cars_not_rented(session)
+
+@router.get("/louee",response_model=List[Voiture])
+def voituresDisponible(session: Session = Depends(get_session)):
+    return cv.all_cars_rented(session)
 
 @router.get("/nombre")
 def nombreVoitures(session: Session = Depends(get_session)):
@@ -43,7 +48,7 @@ def voiture(num_imma:int,response:Response,session: Session = Depends(get_sessio
 def getCarByBrand(brand:str,session: Session = Depends(get_session)):
     return cv.getCarByBrand(brand,session)
 
-@router.post("/",response_model=Voiture,status_code=201)
+@router.post("/",response_model=Union[Voiture,str],status_code=201)
 def ajout_voiture(voiture:Voiture,session: Session = Depends(get_session)):
     return cv.create_car(voiture,session)
 

@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import List, Optional
+from sqlalchemy import Column, Integer
 
 from sqlmodel import Field, Relationship, SQLModel, create_engine
 
@@ -17,7 +18,7 @@ class Locataire(SQLModel, table=True):
 class Voiture(SQLModel, table=True):
     # Note: Optional fields are marked as Nullable in the database
     __tablename__ = 'voiture'
-    num_imma: Optional[int] = Field(default=None,primary_key=True)
+    num_imma: int = Field(sa_column=Column("num_imma", Integer, nullable=False, primary_key=True, autoincrement=False))
     marque: str =Field(index=True)
     modele: str
     kilometrage: int
