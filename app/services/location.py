@@ -16,8 +16,8 @@ def louer(location:Location,session:Session):
     else:
         return False
 
-def rendre(num:int,session:Session):
-    voiture=getCarByNum(num,session)
+def rendre(location:Location,session:Session):
+    voiture=getCarByNum(location.num_imma,session)
     if voiture:
         voiture.locataire = None
         voiture.etat=0
@@ -27,3 +27,8 @@ def rendre(num:int,session:Session):
         return True
     else:
         return False
+
+def liste_voitures_locataire(id_loc:int,session:Session):
+    locataire=getRenterById(id_loc,session)
+    if locataire:
+        return locataire.voitures
