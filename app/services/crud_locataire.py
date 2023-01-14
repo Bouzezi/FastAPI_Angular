@@ -37,6 +37,13 @@ def update_Renter(modif_locataire:Locataire,id:int,session: Session):
 def delete_Renter(id:int,session: Session):
     locataire=getRenterById(id,session)
     if locataire:
+        list=locataire.voitures
+        for car in list:
+            car.locataire = None
+            car.etat=0
+            session.add(car)
+            session.commit()
+            session.refresh(car)
         session.delete(locataire)
         session.commit()
     return locataire
