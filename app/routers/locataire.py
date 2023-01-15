@@ -45,10 +45,11 @@ def modif_locataire(modif_locataire:Locataire,id:int,response:Response,session: 
 
 @router.delete("/{id}",response_model=Union[Locataire,str])
 def supp_locataire(id:int,response:Response,session: Session = Depends(get_session)):
-    locataire=cl.delete_Renter(id,session)
-    if locataire is None:
+    deleted=cl.delete_Renter(id,session)
+    if deleted:
+        return Response(status_code=200)
+    else:
         response.status_code=404
         return "locataire non trouvée"
-    else:
-        return Response(status_code=200)
+        
 

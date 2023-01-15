@@ -32,3 +32,5 @@ def liste_voitures_locataire(id_loc:int,session:Session):
     locataire=getRenterById(id_loc,session)
     if locataire:
         return locataire.voitures
+    else:
+        return False

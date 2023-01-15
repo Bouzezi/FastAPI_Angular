@@ -16,11 +16,12 @@ def get_session():
         yield session
 
 @router.post("/louer")
-def louer(location:Location,session: Session = Depends(get_session)):
+def louer(location:Location,response:Response,session: Session = Depends(get_session)):
     rented=loc.louer(location,session)
     if rented:
         return Response(status_code=201)
     else:
+        response.status_code=500
         return "operation echouée"
 
 @router.put("/rendre")
@@ -33,4 +34,8 @@ def rendre(location:Location,session: Session = Depends(get_session)):
     
 @router.get("/listeVoitures/{id_loc}",response_model=Union[List[Voiture],str])
 def liste_voitures_locataire(id_loc:int,response:Response,session: Session = Depends(get_session)):
-    return loc.liste_voitures_locataire(id_loc,session)
+    l= loc.liste_voitures_locataire(id_loc,session)
+    if l == False:
+        response.status_code=404
+        return "locataire non trouvée"
+    return l
