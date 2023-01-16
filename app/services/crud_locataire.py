@@ -1,5 +1,4 @@
-from fastapi import Response
-from sqlmodel import Session, select
+from sqlmodel import Session, select,func
 from database import Locataire
 
 
@@ -15,7 +14,6 @@ def getRenterById(id:int,session: Session):
 def getRenterByName(name:str,session: Session):
     stmt= select(Locataire).where(Locataire.nom.like('%'+ name + '%'))
     return session.exec(stmt).all()
-    
 
 def create_Renter(locataire:Locataire,session: Session):
     session.add(locataire)

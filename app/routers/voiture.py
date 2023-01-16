@@ -32,12 +32,16 @@ def voituresDisponible(session: Session = Depends(get_session)):
 def nombreVoitures(session: Session = Depends(get_session)):
     return cv.total_number_cars(session)
 
+@router.get("/nombreLoue")
+def total_renting_cars(session: Session = Depends(get_session)):
+    return cv.total_renting_cars(session)
+
 @router.get("/kilometrage moyenne")
 def kilometrageMoyenne(session: Session = Depends(get_session)):
     return cv.average_kilo_cars(session)
 
 @router.get("/{num_imma}",response_model=Union[Voiture,str])
-def voiture(num_imma:int,response:Response,session: Session = Depends(get_session)):
+def get_Car_By_Num(num_imma:int,response:Response,session: Session = Depends(get_session)):
     voiture=cv.getCarByNum(num_imma,session)
     if voiture is None:
         response.status_code=404
